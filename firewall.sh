@@ -1,3 +1,44 @@
+#!/bin/bash
+
+##########################################################################################
+## Création d’un scripts qui va répertorier toutes nos commandes iptables (firewall.sh) ##
+##########################################################################################
+
+## 1 - Copier les règles iptables dans le fichier /root/firewall.sh
+##
+## 2 - Rendre le scripts executable :
+## chmod +x /root/firewall.sh
+##
+## 3 - Testons et vérifions l'exécution du script :
+## /root/firewall.sh
+## iptables -L
+##
+## 4 - Rendre nos règles non-volatiles :
+## iptables-save > /etc/firewall.conf
+##
+## 5 - Ouvrez /etc/network/if-up.d/iptables et ajoutez ce qui suit :
+## vim /etc/network/if-up.d/iptables
+##
+## #!/bin/sh
+## iptables-restore < /etc/firewall.conf
+##
+## 6 - Rendre le script exécutables :
+## chmod +x /etc/network/if-up.d/iptables
+## chmod +x /etc/firewall.conf # optionnel
+##
+## 7 - Les règles seront restaurées à chaque démarrage du réseau
+##
+## 8 - Pour modifier les Règles :
+## vim /root/firewall.sh
+## /root/firewall.sh
+## iptables-save > /etc/firewall.conf
+
+#####################
+## Règles iptables ##
+#####################
+
+## DEBUT ##
+
 ######################
 ## FILTRAGE DE BASE ##
 ######################
@@ -77,3 +118,5 @@ iptables -A INPUT -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
 
 # Supprimer les paquets XMAS mal formés entrants
 iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
+
+## FIN ##
