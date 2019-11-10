@@ -1,44 +1,5 @@
 #!/bin/bash
 
-##########################################################################################
-## Création d’un scripts qui va répertorier toutes nos commandes iptables (firewall.sh) ##
-##########################################################################################
-
-## 1 - Copier les règles iptables dans le fichier /root/firewall.sh
-##
-## 2 - Rendre le scripts executable :
-## chmod +x /root/firewall.sh
-##
-## 3 - Testons et vérifions l'exécution du script :
-## /root/firewall.sh
-## iptables -L
-##
-## 4 - Rendre nos règles non-volatiles :
-## iptables-save > /etc/firewall.conf
-##
-## 5 - Ouvrez /etc/network/if-up.d/iptables et ajoutez ce qui suit :
-## vim /etc/network/if-up.d/iptables
-##
-## #!/bin/sh
-## iptables-restore < /etc/firewall.conf
-##
-## 6 - Rendre le script exécutables :
-## chmod +x /etc/network/if-up.d/iptables
-## chmod +x /etc/firewall.conf # optionnel
-##
-## 7 - Les règles seront restaurées à chaque démarrage du réseau
-##
-## 8 - Pour modifier les Règles :
-## vim /root/firewall.sh
-## /root/firewall.sh
-## iptables-save > /etc/firewall.conf
-
-#####################
-## Règles iptables ##
-#####################
-
-## DEBUT ##
-
 ######################
 ## FILTRAGE DE BASE ##
 ######################
@@ -56,13 +17,13 @@ iptables -P OUTPUT DROP
 iptables -A INPUT -i lo -j ACCEPT
 iptables -A OUTPUT -o lo -j ACCEPT
 
-# Autoriser une connexion déjà établie
+# Autoriser une connexions déjà établie
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
-########################
-## FILTRAGE PERSONNEL ##
-########################
+#######################
+## FILTRAGE PERSO ##
+#######################
 
 # SSH
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT
@@ -81,6 +42,10 @@ iptables -A OUTPUT -p tcp --dport 123 -j ACCEPT
 # SMB
 iptables -A INPUT -p tcp --dport 445 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 445 -j ACCEPT
+
+# SMTP
+iptables -A INPUT -p tcp --dport 465 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 465 -j ACCEPT
 
 # DNS
 iptables -A INPUT -p tcp --dport 53 -j ACCEPT
@@ -119,4 +84,13 @@ iptables -A INPUT -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
 # Supprimer les paquets XMAS mal formés entrants
 iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
 
-## FIN ##
+## END ##
+
+# IP à bannir depuis le fichier "banlist.txt"
+cat banlip.txt | while read line ; do iptables -A INPUT -s $line -j DROP ; done
+
+# Liste des IP à bannir avec ipset
+ipset -q flush ipsum
+ipset -q create ipsum hash:net
+for ip in $(curl --compressed https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt 2>/dev/null | grep -v "#" | grep -v -E "\s[1-2]$" | cut -f 1); do ipset add ipsum $ip; done
+iptables -I INPUT -m set --match-set ipsum src -j DROP
