@@ -1,31 +1,41 @@
-#### 1 - Copier les règles iptables dans le fichier /root/firewall.sh
+####  Copier les règles iptables dans le fichier /root/firewall.sh
 
-#### 2 - Rendre le scripts executable :
-sudo chmod +x /root/Scripts/firewall.sh
-
-#### 3 - tester et vérifier l'exécution du script :
-sudo ./root/firewall.sh
+#### Rendre le scripts executable :
+```bash
+sudo chmod +x /root/scripts/firewall.sh
+```
+#### Tester et vérifier l'exécution du script :
+```bash
+sudo /root/firewall.sh
+```
+```bash
 sudo iptables -L
-
-#### 4 - Rendre les règles non-volatiles :
+```
+#### Rendre les règles non-volatiles :
+```bash
 sudo iptables-save > /etc/firewall.conf
+```
+####  Ouvrez /etc/network/if-up.d/iptables et ajoutez ce qui suit :
 
-#### 5 - Ouvrez /etc/network/if-up.d/iptables et ajoutez ce qui suit :
-sudo vim /etc/network/if-up.d/iptables
-
-#!/bin/sh
+```bash
+#!/bin/bash
 iptables-restore < /etc/firewall.conf
-
+```
 #### 6 - Le rendre exécutable :
+```bash
 sudo chmod +x /etc/network/if-up.d/iptables
-
+```
 #### 8 - Pour modifier les Règles :
+```bash
 sudo vim /root/firewall.sh
-./root/firewall.sh
+sudo /root/firewall.sh
 sudo iptables-save > /etc/firewall.conf
-
+```
 #### Voir les IP bannies depuis le fihier banip.txt
+```bash
 iptables -L INPUT -nv --line-numbers | grep DROP
-
+```
 #### Voir les IP bannies depuis ipset
+```bash
 ipset -L
+```
