@@ -1,9 +1,9 @@
 ####  Copier les règles iptables dans le fichier /root/firewall.sh
 
 #### Rendre le scripts executable :
-``
+```
 sudo chmod +x /root/scripts/firewall.sh
-``
+```
 #### Tester et vérifier l'exécution du script :
 `
 sudo /root/firewall.sh
