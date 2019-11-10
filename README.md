@@ -1,3 +1,4 @@
+# Créer un script persistant pour des commandes Iptables 
 ####  Copier les règles iptables dans le fichier */root/firewall.sh*
 
 #### Rendre le scripts executable :
