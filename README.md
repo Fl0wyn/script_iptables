@@ -30,11 +30,11 @@ sudo vim /root/firewall.sh
 sudo /root/firewall.sh
 sudo iptables-save > /etc/firewall.conf
 ```
-#### Voir les IP bannies depuis le fihier banip.txt
+#### Voir les IP bannies depuis le fihier *banip.txt*
 ```
 iptables -L INPUT -nv --line-numbers | grep DROP
 ```
 #### Voir les IP bannies depuis ipset
-`
+```
 ipset -L
 ```
