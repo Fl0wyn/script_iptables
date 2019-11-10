@@ -1,4 +1,4 @@
-####  Copier les règles iptables dans le fichier /root/firewall.sh
+####  Copier les règles iptables dans le fichier */root/firewall.sh*
 
 #### Rendre le scripts executable :
 ```
@@ -15,7 +15,7 @@ sudo iptables -L
 ```
 sudo iptables-save > /etc/firewall.conf
 ```
-#### Ouvrez /etc/network/if-up.d/iptables et ajoutez ce qui suit :
+#### Ouvrez */etc/network/if-up.d/iptables* et ajoutez ce qui suit :
 ```
 #!/bin/bash
 iptables-restore < /etc/firewall.conf
