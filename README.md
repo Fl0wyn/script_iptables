@@ -3,18 +3,18 @@
 
 #### Rendre le scripts executable :
 ```
-sudo chmod +x /root/scripts/firewall.sh
+chmod +x /root/scripts/firewall.sh
 ```
 #### Tester et vérifier l'exécution du script :
 ```
-sudo /root/firewall.sh
+bash /root/firewall.sh
 ```
 ```
-sudo iptables -L
+iptables -L
 ```
 #### Rendre les règles non-volatiles :
 ```
-sudo iptables-save > /etc/firewall.conf
+iptables-save > /etc/firewall.conf
 ```
 #### Ouvrez */etc/network/if-up.d/iptables* et ajoutez ce qui suit :
 ```
@@ -23,13 +23,13 @@ iptables-restore < /etc/firewall.conf
 ```
 #### Le rendre exécutable :
 ```
-sudo chmod +x /etc/network/if-up.d/iptables
+chmod +x /etc/network/if-up.d/iptables
 ```
 #### Pour modifier les Règles :
 ```
-sudo vim /root/firewall.sh
-sudo /root/firewall.sh
-sudo iptables-save > /etc/firewall.conf
+vim /root/firewall.sh
+bash /root/firewall.sh
+iptables-save > /etc/firewall.conf
 ```
 #### Voir les IP bannies depuis le fihier *banip.txt*
 ```
