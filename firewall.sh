@@ -35,17 +35,25 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 443 -j ACCEPT
 
-# NTP
-iptables -A INPUT -p tcp --dport 123 -j ACCEPT
-iptables -A OUTPUT -p tcp --dport 123 -j ACCEPT
+# SMTP
+iptables -A INPUT -p tcp --dport 465 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 465 -j ACCEPT
+
+# IMAP
+iptables -A INPUT -p tcp --dport 993 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 993 -j ACCEPT
+
+# WHOIS
+iptables -A INPUT -p tcp --dport 43 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 43 -j ACCEPT
 
 # SMB
 iptables -A INPUT -p tcp --dport 445 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 445 -j ACCEPT
 
-# SMTP
-iptables -A INPUT -p tcp --dport 465 -j ACCEPT
-iptables -A OUTPUT -p tcp --dport 465 -j ACCEPT
+# NTP
+iptables -A INPUT -p tcp --dport 123 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 123 -j ACCEPT
 
 # DNS
 iptables -A INPUT -p tcp --dport 53 -j ACCEPT
@@ -87,7 +95,7 @@ iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
 ## END ##
 
 # IP à bannir depuis le fichier "banlist.txt"
-cat banlip.txt | while read line ; do iptables -A INPUT -s $line -j DROP ; done
+cat banip.txt | while read line ; do iptables -A INPUT -s $line -j DROP ; done
 
 # Liste des IP à bannir avec ipset
 ipset -q flush ipsum
