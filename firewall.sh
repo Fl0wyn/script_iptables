@@ -21,9 +21,9 @@ iptables -A OUTPUT -o lo -j ACCEPT
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
-#######################
+####################
 ## FILTRAGE PERSO ##
-#######################
+####################
 
 # SSH
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT
@@ -91,8 +91,6 @@ iptables -A INPUT -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
 
 # Supprimer les paquets XMAS mal formés entrants
 iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
-
-## END ##
 
 # IP à bannir depuis le fichier "banlist.txt"
 cat banip.txt | while read line ; do iptables -A INPUT -s $line -j DROP ; done
