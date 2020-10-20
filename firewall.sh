@@ -29,8 +29,8 @@ iptables -A OUTPUT -p tcp --dport 22 -j ACCEPT
 
 # HTTP + HTTPS
 iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 443 -j ACCEPT
 
 # SMTP
@@ -89,8 +89,8 @@ iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
 # IP à bannir du fichier "banlist.txt
 ##cat banip.txt | while read line ; do iptables -A INPUT -s $line -j DROP ; done
 
-# Liste des IP à interdire avec ipset
-ipset -q flush ipsum
-ipset -q create ipsum hash:net
-for ip in $(curl --compressed https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt 2>/dev/null | grep -v "#" | grep -v -E "\s[1-2]$" | cut -f 1); do ipset add ipsum $ip; done
-iptables -I INPUT -m set --match-set ipsum src -j DROP
+# Liste des IP à interdire avec ipset (Optionel : installer le paquet ipset)
+##ipset -q flush ipsum
+##ipset -q create ipsum hash:net
+##for ip in $(curl --compressed https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt 2>/dev/null | grep -v "#" | grep -v -E "\s[1-2]$" | cut -f 1); do ipset add ipsum $ip; done
+##iptables -I INPUT -m set --match-set ipsum src -j DROP
