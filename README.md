@@ -1,3 +1,3 @@
 # Script iptables
-[wiki.feranet.fr](https://wiki.feranet.fr/securite-iptables-ipset)
+[https://feranet.fr/](https://feranet.fr/configuration/iptables-ipset.html#configuration-iptables-ipset)
 
