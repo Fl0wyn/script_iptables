@@ -1,27 +1,27 @@
 #!/bin/bash
 
 ##################
-## FILTRE BASIC ##
+## BASIC FILTER ##
 ##################
 
-# Réinitialise les règles
+# Reset rules
 iptables -F
 iptables -X
 
-# Bloque tout le trafic
+# Blocks all traffic
 iptables -P INPUT DROP
 iptables -P FORWARD DROP
 iptables -P OUTPUT DROP
 
-# Autorise les connexions déjà établies et localhost
+# Allows already established connections and localhost
 iptables -A INPUT -i lo -j ACCEPT
 iptables -A OUTPUT -o lo -j ACCEPT
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
-#######################
-## FILTRE DE SERVICE ##
-#######################
+####################
+## SERVICE FILTER ##
+####################
 
 # SSH
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT
@@ -59,13 +59,13 @@ iptables -A OUTPUT -p tcp --dport 53 -j ACCEPT
 iptables -A INPUT -p udp --dport 53 -j ACCEPT
 iptables -A OUTPUT -p udp --dport 53 -j ACCEPT
 
-####################
-## FILTRE AVANCEE ##
-####################
+#####################
+## ADVANCED FILTER ##
+#####################
 
-# Autoriser les types de paquets IMCP utiles
-# Prévenir les inondations ping
-# Supprimer les paquets non valables / NULL / syn-flood / XMAS
+# Allow useful IMCP packet types
+# Preventing flood ping
+# Delete invalid / NULL / syn-flood / XMAS packets
 iptables -A OUTPUT -p icmp -j ACCEPT
 iptables -A INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
 iptables -A INPUT -p icmp --icmp-type source-quench -j ACCEPT
@@ -82,14 +82,14 @@ iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP
 iptables -A INPUT -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
 iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
 
-####################
-## FILTRE EXTERNE ##
-####################
+#####################
+## EXTERNAL FILTER ##
+#####################
 
-# IP à bannir du fichier "banlist.txt
+# IP to ban from file "banlist.txt
 ##cat banip.txt | while read line ; do iptables -A INPUT -s $line -j DROP ; done
 
-# Liste des IP à interdire avec ipset (Optionel : installer le paquet ipset)
+# List of IPs to forbid with ipset (Optional: install the ipset package)
 ##ipset -q flush ipsum
 ##ipset -q create ipsum hash:net
 ##for ip in $(curl --compressed https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt 2>/dev/null | grep -v "#" | grep -v -E "\s[1-2]$" | cut -f 1); do ipset add ipsum $ip; done
